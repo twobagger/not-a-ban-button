@@ -2,8 +2,8 @@ navigator.__defineGetter__('userAgent', function () {
     return "nation " + document.getElementById("loggedin").attributes[1].nodeValue + " using ban button tool - Please send inquiries to Twobagger, perhaps at julian.nationstates@gmail.com"
 });
 
-var valueToStore = "nothing yet"
-var hereBeForms = document.forms
+var valueToStore = "";
+var hereBeForms = document.forms;
 
 for (var list_element of hereBeForms) 
 {
@@ -15,8 +15,8 @@ for (var list_element of hereBeForms)
 		// The same value is also present on the administration page.
 		var inputs = list_element.getElementsByTagName("input")
 		valueToStore = inputs[0].getAttribute("value")
-		
-		if (valueToStore != "nothing yet") // maybe I should put something in for when this fails?
+		console.log(valueToStore)
+		if (valueToStore) // maybe I should put something in for when this fails?
 		{
 			// handles the actual local storage.
 			chrome.storage.local.set({'myValue': valueToStore}, function()

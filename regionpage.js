@@ -20,6 +20,7 @@ var thisValue = chrome.storage.local.get('myValue', function(result)
 			if (thisText.indexOf("arrived") > -1) // if "arrived" is present in the happenings line...
 			{
 				// TODO: check and see if something dumb like Vinny's nation pretitle breaks this.
+				// It appears that it does not; the "The " prefix appears to always hold the first link (to the nation page)
 				var link_thing = li.getElementsByTagName('a')[0].href; //this grabs the first link in the line. should be to the nation page. 
 				var nationName = link_thing.replace(/.*nation=(.*)/i,'$1'); 
 				var displayName = nationName.replace(/_/g,' '); 
@@ -54,10 +55,7 @@ var thisValue = chrome.storage.local.get('myValue', function(result)
 					e.preventDefault(); 
 					
 					// Turns off all the buttons.
-					for (var oneButton of buttonArray)
-					{
-						oneButton.disabled = true
-					}
+					buttonArray.map(button=>button.disabled = true);
 					
 					// Creates a new XHR
 					var xhr = new XMLHttpRequest();
@@ -65,19 +63,14 @@ var thisValue = chrome.storage.local.get('myValue', function(result)
 					// This will fire when the request enters a new state.
 					xhr.onreadystatechange = function() 
 					{
-						// readyState == 4 is the "Done" state. I may not need the status, since
-						// we're probably ok to send again even if the request fails.
-						if(xhr.readyState==4 && xhr.status==200) 
+						// readyState == 4 is the "Done" state.
+						if(xhr.readyState==4) 
 						{
 							setTimeout(function()
 							{
-								// Currently, it waits for the request to finish, then waits an additional one second.
-								// I could just make it happen after the request finishes, but then I can't guarantee 
-								// that every click gives a ban, even if you click in perfect 1s increments.
-								for (var oneButton of buttonArray)
-								{
-									oneButton.disabled = false
-								}
+								// TODO: add option to remove 1s delay.
+								// maybe a clickable button?
+								buttonArray.map(button=>button.disabled = false);
 							}, 1000); // end setTimeout
 						}
 					} // end onreadystatechange
@@ -85,9 +78,20 @@ var thisValue = chrome.storage.local.get('myValue', function(result)
 					// These lines send the needed information in the request
 					// Right now, it mimics what you'd send if you clicked the ban button from the nation page
 					xhr.open("POST","/nation=" + e.target.name,true);
-					data = new FormData()
+					data = new FormData();
 					data.set("chk",e.target.value)
 					data.set("ban",1)
+					console.log("Sending request to ban nation " + e.target.name)
+					
+					// TODO: Implement a way to check what *nation* stored the data.
+					// Perhaps also on what date?
+					// If I store something for one nation on an op, and then come back a month later
+					// but forget to store anything then, I'll have the wrong chk value and get screwed.
+					if (!e.target.value)
+					{
+						alert("No chk value found! Please visit a nation page promptly.")
+					}
+					
 					xhr.send(data);	
 					
 				}); // end addEventListener
