@@ -1,0 +1,16 @@
+{
+  "name": "Super Secret Thing",
+  "version": "0.1",
+  "manifest_version": 2,
+  "content_scripts": [
+    {
+      "matches": ["https://www.nationstates.net/nation=*"],
+      "js": ["nationpage.js"]
+    },
+    {
+      "matches": ["https://www.nationstates.net/region=*"],
+      "js": ["regionpage.js"]
+    }
+  ],
+  "permissions": ["storage"]
+}
