@@ -14,16 +14,35 @@ for (var list_element of hereBeForms)
 		// right now, there is one "input" element. it stores the "chk" value used for validation I think?
 		// The same value is also present on the administration page.
 		var inputs = list_element.getElementsByTagName("input")
-		valueToStore = inputs[0].getAttribute("value")
+		
+		try
+		{
+			valueToStore = inputs[0].getAttribute("value")
+		}
+		catch (e)
+		{
+			alert("Error finding the chk value! Please tell Twobagger (or another technical person) what nation page you visited to find this alert.")
+			console.log(e.message)
+		}
 		console.log(valueToStore)
+		
+		
 		if (valueToStore) // maybe I should put something in for when this fails?
 		{
 			// handles the actual local storage.
-			chrome.storage.local.set({'myValue': valueToStore}, function()
+			try
 			{
-				console.log('Setting value: ' + valueToStore);
-				console.log('You should be ready to kick them now!');
-			});
+				chrome.storage.local.set({'myValue': valueToStore}, function()
+				{
+					console.log('Setting value: ' + valueToStore);
+					console.log('You should be ready to kick them now!');
+				});
+			}
+			catch (e)
+			{
+				alert("Error storing the chk value! Please tell Twobagger (or another technical person) what nation page you visited to find this alert.")
+				console.log(e.message)
+			}
 		}
 		
 	} // end list_element.getAttribute... 
