@@ -21,7 +21,7 @@ Known issues, possibly with solutions:
 
 Issue: visiting a subpage of the nation page with buttons that redirect you to a similar page will trigger an alert (but not kill the extension)
 Example: https://www.nationstates.net/nation=twobagger/detail=trend/censusid=13 (the buttons here have an action that redirects to another version of the same page, which also has "/nation=")
-Solution: TBA, but for now, users may put the extension in click-to-use mode instead of always-on mode.
+Solution: TBA, but for now, users may put the extension in click-to-use mode instead of always-on mode. May also limit the pages where the nationpage.js script triggers.
 
 Issue: if a user attempts to ban a nation, but their most recent chk value was with a different nation (or even on a different day with the same nation), the bans may fail in a non-obvious way.
 Solution: TBA. May implement a button that the user can trigger to display the current chk value, the nation used to store that value, and the date/time when the user stored this value. (Of course, the tool would have to store all of these!)
